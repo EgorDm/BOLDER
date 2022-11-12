@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[7033],{87033:function(e,n,b){e.exports=b.p+"static/media/bibo.b99b7c100398bbf6f63a.nq"}}]);

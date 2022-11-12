@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[2054],{92054:function(e,n,t){e.exports=t.p+"static/media/ical.44f29fa7c82104b93787.nq"}}]);

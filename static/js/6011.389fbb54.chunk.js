@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[6011],{46011:function(e,n,a){e.exports=a.p+"static/media/geor.aa27cdda0839a4ec0ef7.nq"}}]);

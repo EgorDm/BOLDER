@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[561],{40561:function(n,e,t){n.exports=t.p+"static/media/lvont.d5159f8b5ca939d78c8b.nq"}}]);

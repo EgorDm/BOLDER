@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[632],{40632:function(e,n,s){e.exports=s.p+"static/media/sosa.36f10e2ca1c62fb7ba44.nq"}}]);

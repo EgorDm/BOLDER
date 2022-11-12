@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[5739],{75739:function(e,n,s){e.exports=s.p+"static/media/discipline.59086e4b4dfdb76c2efa.nq"}}]);

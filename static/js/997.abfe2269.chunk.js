@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[997],{60997:function(e,f,n){e.exports=n.p+"static/media/dbo.d9675104ff0fd9af2be1.nq"}}]);

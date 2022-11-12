@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[951],{30951:function(e,n,s){e.exports=s.p+"static/media/skosxl.451a6b733c17b1128233.nq"}}]);

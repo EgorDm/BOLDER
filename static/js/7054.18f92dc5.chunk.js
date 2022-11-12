@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[7054],{27054:function(e,n,t){e.exports=t.p+"static/media/vcard.ed0a22e46c21b12260f1.nq"}}]);

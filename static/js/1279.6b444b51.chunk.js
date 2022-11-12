@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[1279],{21279:function(e,n,c){e.exports=c.p+"static/media/ebucore.654f8fc68ca016460558.nq"}}]);

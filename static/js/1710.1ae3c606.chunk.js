@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[1710],{71710:function(e,n,c){e.exports=c.p+"static/media/rico.c9cdd8a2f2ebe5a0f2be.nq"}}]);

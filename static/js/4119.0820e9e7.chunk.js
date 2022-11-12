@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[4119],{14119:function(e,n,s){e.exports=s.p+"static/media/skos.f91a29f3485286631513.nq"}}]);
