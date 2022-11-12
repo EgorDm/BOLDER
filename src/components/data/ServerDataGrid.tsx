@@ -47,7 +47,7 @@ export const ExpandableCell = ({ value, maxLength = 200 }: GridRenderCellParams 
 
 
 export const ServerDataGrid = (props: {
-  endpoint: string,
+  data: any[],
   columns: GridColDef[],
   initialState: GridInitialStateCommunity,
   initialSorting: GridSortModel,
@@ -56,12 +56,11 @@ export const ServerDataGrid = (props: {
 
 } & Partial<React.ComponentProps<typeof DataGrid>>) => {
   const {
-    endpoint, columns, initialState, initialSorting, initialFilter, actions, ...rest
+    data, columns, initialState, initialSorting, initialFilter, actions, ...rest
   } = props;
 
-  const [ filterModel, setFilterModel ] = React.useState<GridFilterModel>(initialFilter ?? { items: [] });
-  const [ sortModel, setSortModel ] = React.useState<GridSortModel>(initialSorting ?? []);
   const [ deleteItem, setDeleteItem ] = React.useState<null | any>(null);
+
   const { sendNotification } = useNotification();
 
   const columnsProcessed = useMemo(() => {
@@ -85,65 +84,25 @@ export const ServerDataGrid = (props: {
     ]
   }, [ columns ]);
 
-/*  const {
-    isLoading, isFetching,
-    data: rows, count,
-    page, setPage,
-    limit, setLimit,
-    setQuery,
-    setOrdering,
-  } = useFetchList<Report>(endpoint, {}, {});*/
+  // useEffect(() => {
+  //   const model = sortModel.length ? sortModel : initialSorting;
+  //   const direction = model[0].sort === 'desc' ? '-' : '';
+  //   const field = model[0].field;
+  //   setOrdering(`${direction}${field}`);
+  // }, [ sortModel, initialSorting ]);
 
-
-/*  const {
-    isLoading: isDeleting,
-    mutate,
-  } = useMutation<any>(async (item) => {
-    console.debug('Deleting item ', item);
-    try {
-      await apiClient.delete(`${endpoint}${(item as any).id}`);
-      setDeleteItem(null);
-    } catch (e) {
-      sendNotification({
-        variant: 'error',
-        message: extractErrorMessage(e),
-      });
-    }
-  })*/
-
-  return null;
-
-/*
-  useEffect(() => {
-    const model = sortModel.length ? sortModel : initialSorting;
-    const direction = model[0].sort === 'desc' ? '-' : '';
-    const field = model[0].field;
-    setOrdering(`${direction}${field}`);
-  }, [ sortModel, initialSorting ]);
-
-  useEffect(() => {
-    setQuery(filterModel?.quickFilterValues?.join(' ') ?? '');
-  }, [ filterModel ]);
+  // useEffect(() => {
+  //   setQuery(filterModel?.quickFilterValues?.join(' ') ?? '');
+  // }, [ filterModel ]);
 
   return (
     <>
       <DataGrid
         {...rest}
-        rows={rows || []}
-        rowCount={count}
-        loading={isLoading || isFetching}
+        rows={data || []}
         pagination
-        page={page}
-        pageSize={limit}
-        paginationMode="server"
-        onPageChange={setPage}
-        onPageSizeChange={setLimit}
         columns={columnsProcessed}
         rowsPerPageOptions={[ 20, 50, 100 ]}
-        filterMode="server"
-        onFilterModelChange={setFilterModel}
-        sortingMode="server"
-        onSortModelChange={setSortModel}
         getRowHeight={() => 'auto'}
         getEstimatedRowHeight={() => 100}
         components={{
@@ -180,13 +139,13 @@ export const ServerDataGrid = (props: {
         <FormContainer
           actions={<>
             <Button variant="contained" color={"info"} onClick={() => setDeleteItem(null)}>Cancel</Button>
-            <Button variant="contained" color={"error"} onClick={() => mutate(deleteItem)}>Delete</Button>
+            <Button variant="contained" color={"error"} onClick={() => console.log('todo: delete item')}>Delete</Button>
           </>}
-          loading={isDeleting}
+          loading={false}
         >
           <Typography>Are you sure you want to delete item <pre style={{display: 'inline'}}>{deleteItem?.name ?? deleteItem?.title}</pre></Typography>
         </FormContainer>
       </ModalContainer>
     </>
-  )*/
+  )
 }

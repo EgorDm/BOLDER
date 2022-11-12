@@ -11,15 +11,13 @@ import { ServerDataGrid } from "../../components/data/ServerDataGrid";
 import { Report } from "../../types/reports";
 import { formatDateTime, formatUUIDShort } from "../../utils/formatting";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from 'react-redux';
+import { selectAllReports } from '../../slices';
 
 const COLUMNS: GridColDef[] = [
   {
     field: 'id', headerName: 'ID', flex: 0.5,
     valueFormatter: (params) => formatUUIDShort(params.value)
-  },
-  {
-    field: 'dataset', headerName: 'Dataset', flex: 1,
-    valueGetter: (params) => params.value.name
   },
   {
     field: 'name', headerName: 'Name', flex: 0.5,
@@ -53,6 +51,8 @@ const INITIAL_SORTING: GridSortModel = [
 export const ReportsGrid = (props: {}) => {
   const navigate = useNavigate();
 
+  const reports = useSelector(selectAllReports);
+
   const onReportEdit = async (report: Report) => {
     await navigate(`/report/${report.id}`);
   }
@@ -60,7 +60,7 @@ export const ReportsGrid = (props: {}) => {
   return (
     <Box sx={{ width: '100%', height: 600 }}>
       <ServerDataGrid
-        endpoint="/reports/"
+        data={reports}
         columns={COLUMNS}
         initialState={INITIAL_STATE}
         initialSorting={INITIAL_SORTING}
