@@ -4,6 +4,7 @@ import useNotification from "../hooks/useNotification";
 import { CellId } from "../types";
 import { useCellFocusContext } from "./CellFocusProvider";
 import { useNotebookContext } from "./NotebookProvider";
+import { useTasksContext } from "./TasksProvider";
 
 export const RunQueueContext = React.createContext<{
   queue: CellId[];
@@ -31,19 +32,21 @@ export const RunQueueProvider = (props: {
     ));
   }, [ notebookRef ]);
 
+  const { runCell: scheduleRunCell } = useTasksContext();
+
   const { sendNotification } = useNotification();
   const { changed } = useNotebookContext();
   useEffect(() => {
-    if (!changed && queue.length > 0) {
+    if (queue.length > 0) {
       console.debug('Dispatching run queue');
       for (const cellId of queue) {
-        console.debug('TODO: run cell');
+        scheduleRunCell(cellId);
       }
 
       sendNotification({ variant: 'info', message: `Running ${queue.length} cell(s)` })
       setRunQueue([]);
     }
-  }, [ changed, queue.length > 0 ]);
+  }, [ queue.length > 0 ]);
 
   const { focusRef } = useCellFocusContext();
   useEffect(() => {

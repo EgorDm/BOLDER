@@ -75,7 +75,7 @@ export const extractSparqlResult = (output?: CellOutput): SPARQLResult | null =>
     const contentType = Object.keys(output.data)[0];
     const data = output.data[contentType];
 
-    if (contentType === 'application/n-triples') {
+    if (contentType === 'application/n-triples' || typeof data !== 'string') {
       return data;
     } else {
       return JSON.parse(data);

@@ -8,6 +8,7 @@ import { ClipboardProvider } from "../../providers/ClipboardProvider";
 import { NotebookProvider } from "../../providers/NotebookProvider";
 import { ReportProvider } from "../../providers/ReportProvider";
 import { RunQueueProvider } from "../../providers/RunQueueProvider";
+import { TasksProvider } from '../../providers/TasksProvider';
 import { UndoHistoryProvider } from "../../providers/UndoHistoryProvider";
 
 
@@ -24,15 +25,17 @@ const NotebookPage = (props) => {
         {rid && (
           <ReportProvider reportId={rid as string}>
             <NotebookProvider>
-              <UndoHistoryProvider>
-                <CellFocusProvider>
-                  <ClipboardProvider>
-                    <RunQueueProvider>
-                      <Notebook/>
-                    </RunQueueProvider>
-                  </ClipboardProvider>
-                </CellFocusProvider>
-              </UndoHistoryProvider>
+              <TasksProvider>
+                <UndoHistoryProvider>
+                  <CellFocusProvider>
+                    <ClipboardProvider>
+                      <RunQueueProvider>
+                        <Notebook/>
+                      </RunQueueProvider>
+                    </ClipboardProvider>
+                  </CellFocusProvider>
+                </UndoHistoryProvider>
+              </TasksProvider>
             </NotebookProvider>
           </ReportProvider>
         )}

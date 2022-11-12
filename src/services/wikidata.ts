@@ -77,3 +77,44 @@ const parseDoc = (doc: any, pos: TermPos): Term => {
         range: null,
     }
 }
+
+const sparqlClient = axios.create({
+    baseURL: 'https://query.wikidata.org/sparql',
+    headers: {
+        // 'User-Agent': 'https://github.com/EgorDm/BOLDER',
+        // 'Content-Type': 'application/sparql-query',
+    }
+  });
+
+
+
+export const fetchRunQuery = async (
+    query: string,
+    timeout: number = 5000
+): Promise<any> => {
+    const accept = isGraphQuery(query) ? 'application/n-triples' : 'application/sparql-results+json';
+
+    const result = await sparqlClient.get('', {
+        params: {
+            timeout,
+            query: query,
+        },
+        timeout: timeout,
+        headers: {
+            'Accept': accept,
+        },
+        responseType: 'text',
+    });
+
+    if (result.status !== 200) {
+        throw new Error(result.statusText);
+    }
+
+    return {
+        [accept]: isGraphQuery(query) && typeof result.data !== 'string' ? JSON.stringify(result.data) : result.data,
+    }
+}
+
+const isGraphQuery = (query: string): boolean => {
+    return query.toLowerCase().includes('construct') || query.toLowerCase().includes('describe');
+}
