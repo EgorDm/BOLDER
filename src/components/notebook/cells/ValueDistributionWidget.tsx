@@ -466,7 +466,9 @@ const ResultTab = ({
   if (mode === 'plot') {
     const output = outputs[0];
     if (output.output_type === 'execute_result' && 'application/sparql-results+json' in output.data) {
-      const data: SPARQLResult = JSON.parse(output.data['application/sparql-results+json']);
+      const dataRaw = output.data['application/sparql-results+json'];
+      const data: SPARQLResult = typeof dataRaw === 'string' ? JSON.parse(dataRaw) : dataRaw;
+
       const points = data.results.bindings.filter((row) => row['g']);
       const x = points.map((row) => extractIriLabel(row['gLabel']?.value ?? row['g'].value));
       const y = points.map((row) => row['count']?.value ? (Number(row['count'].value) || null) : null);
@@ -539,7 +541,9 @@ const ResultTab = ({
   } else if (mode === 'completeness') {
     const output = outputs[2];
     if (output && output.output_type === 'execute_result' && 'application/sparql-results+json' in output.data) {
-      const data: SPARQLResult = JSON.parse(output.data['application/sparql-results+json']);
+      const dataRaw = output.data['application/sparql-results+json'];
+      const data: SPARQLResult = typeof dataRaw === 'string' ? JSON.parse(dataRaw) : dataRaw;
+
       const completeCount = data.results.bindings.map((row) => parseInt(row['complete_count'].value))[0] ?? 0;
       const missingCount = data.results.bindings.map((row) => parseInt(row['missing_count'].value))[0] ?? 0;
 
