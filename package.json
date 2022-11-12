@@ -50,6 +50,7 @@
     "react-scripts": "5.0.1",
     "react-vis-network-graph": "^3.0.1",
     "redux-persist": "^6.0.0",
+    "redux-persist-indexeddb-storage": "^1.0.4",
     "stream-browserify": "^3.0.0",
     "uuid": "^8.3.2",
     "web-vitals": "^2.1.4",

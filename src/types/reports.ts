@@ -3,8 +3,8 @@ import { Notebook } from "./notebooks";
 export interface Report {
   id: string;
   notebook: Notebook;
-  created_at: Date;
-  updated_at: Date;
+  created_at?: string;
+  updated_at?: string;
 
   namespaces: null | {
     prefix: string;

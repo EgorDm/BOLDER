@@ -5,7 +5,9 @@ import { GridColDef} from "@mui/x-data-grid";
 import { GridSortModel } from "@mui/x-data-grid/models/gridSortModel";
 import { GridInitialStateCommunity } from "@mui/x-data-grid/models/gridStateCommunity";
 import React from "react";
+import { useSelector } from "react-redux";
 import { ServerDataGrid } from "../../components/data/ServerDataGrid";
+import { selectAllTasks } from "../../slices";
 import { formatDateTime, formatUUIDShort } from "../../utils/formatting";
 
 
@@ -52,10 +54,13 @@ const INITIAL_SORTING: GridSortModel = [
 
 
 export const TasksGrid = (props: {}) => {
+  const tasks = useSelector(selectAllTasks);
+
+
   return (
     <Box sx={{ width: '100%', height: 600 }}>
       <ServerDataGrid
-        endpoint="/tasks/"
+        data={tasks}
         columns={COLUMNS}
         initialState={INITIAL_STATE}
         initialSorting={INITIAL_SORTING}

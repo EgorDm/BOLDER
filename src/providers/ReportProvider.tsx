@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useNotification from "../hooks/useNotification";
-import { selectReport } from "../slices/reportSlice";
+import { selectReport, updateReport } from "../slices/reportSlice";
 import { Report } from "../types";
 import { namespacesToPrefixes, WDT_NAMESPACES } from "../utils/sparql";
 
@@ -21,6 +21,8 @@ export const ReportProvider = (props: {
 
   const { reportId, children, } = props;
 
+  const dispatch = useDispatch();
+
   const remoteReport = useSelector(state => selectReport(state, reportId));
   const [ report, setReportInternal ] = React.useState<Report | null>(remoteReport);
   const reportRef = React.useRef<Report | null>(remoteReport);
@@ -34,6 +36,7 @@ export const ReportProvider = (props: {
     sendNotification({ variant: 'info', message: `Saving report` });
     console.debug('Saved report', report);
     setReport(report);
+    dispatch(updateReport(report));
     // TODO: Save report to ldb?
   }, []);
 

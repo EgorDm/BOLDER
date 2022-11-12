@@ -2,12 +2,15 @@ import {
   Button
 } from "@mui/material"
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FormContainer } from "../../components/layout/FormContainer";
 import useNotification from "../../hooks/useNotification";
 import * as yup from 'yup';
-import { Report } from "../../types";
+import { createNotebook, Report } from "../../types";
+import { v4 as uuidv4 } from 'uuid';
+import { useDispatch } from "react-redux";
+import { updateReport } from "../../slices";
 
 
 export const ReportCreateForm = (props: {
@@ -21,6 +24,7 @@ export const ReportCreateForm = (props: {
   } = props;
 
   const validationSchema = yup.object({});
+  const dispatch = useDispatch();
 
   const formik = useFormik<Partial<Report>>({
     initialValues: {
@@ -28,8 +32,24 @@ export const ReportCreateForm = (props: {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoading(true);
-      console.log('TODO: Create the report')
+      const id = uuidv4();
+
+      dispatch(updateReport({
+        id,
+        notebook: createNotebook('Untitled Report'),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        namespaces: [],
+      }))
+
+      sendNotification({
+        message: "Report created",
+        variant: "success"
+      })
+      onClose(true);
       setLoading(false);
+
+      await navigate(`/report/${id}`);
     },
   });
 

@@ -12,9 +12,10 @@ import { TasksWidget } from "./containers/tasks/TasksWidget";
 import NotebookPage from "./pages/report/[rid]";
 import ReportsPage from "./pages/reports";
 import TasksPage from "./pages/tasks";
-import store from "./store";
+import store, { persistor } from "./store";
 import { theme } from './theme';
 import { Route, Routes } from "react-router-dom";
+import { PersistGate } from "redux-persist/integration/react";
 
 
 const relativeTime = require('dayjs/plugin/relativeTime');
@@ -29,21 +30,23 @@ export default function App(props) {
     <div className="App">
       <CacheProvider value={clientSideEmotionCache}>
         <Provider store={store}>
-          <QueryClientProvider client={queryClient}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <ThemeProvider theme={theme}>
-                <SnackbarProvider maxSnack={3}>
-                  <CssBaseline/>
-                  <Routes>
-                    <Route path="/" element={ReportsPage.getLayout(<ReportsPage/>)}/>
-                    <Route path="/report/:rid" element={NotebookPage.getLayout(<NotebookPage/>)}/>
-                    <Route path="/tasks" element={TasksPage.getLayout(<TasksPage/>)}/>
-                  </Routes>
-                  <TasksWidget/>
-                </SnackbarProvider>
-              </ThemeProvider>
-            </LocalizationProvider>
-          </QueryClientProvider>
+          <PersistGate loading={null} persistor={persistor}>
+            <QueryClientProvider client={queryClient}>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <ThemeProvider theme={theme}>
+                  <SnackbarProvider maxSnack={3}>
+                    <CssBaseline/>
+                    <Routes>
+                      <Route path="/" element={ReportsPage.getLayout(<ReportsPage/>)}/>
+                      <Route path="/report/:rid" element={NotebookPage.getLayout(<NotebookPage/>)}/>
+                      <Route path="/tasks" element={TasksPage.getLayout(<TasksPage/>)}/>
+                    </Routes>
+                    <TasksWidget/>
+                  </SnackbarProvider>
+                </ThemeProvider>
+              </LocalizationProvider>
+            </QueryClientProvider>
+          </PersistGate>
         </Provider>
       </CacheProvider>
     </div>
