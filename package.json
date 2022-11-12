@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://egordm.github.io/BOLDER/",
   "dependencies": {
     "@codemirror/legacy-modes": "^0.20.0",
     "@emotion/cache": "^11.7.1",
