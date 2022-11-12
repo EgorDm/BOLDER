@@ -20,4 +20,5 @@ export interface SearchResult<T> {
     score: number;
     document: T;
   }[];
+  error?: string;
 }

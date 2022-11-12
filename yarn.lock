@@ -9213,6 +9213,7 @@ __metadata:
     typescript: ^4.7.2
     uuid: ^8.3.2
     web-vitals: ^2.1.4
+    wikibase-api: ^3.0.2
     yup: ^0.32.11
   languageName: unknown
   linkType: soft
@@ -11327,6 +11328,13 @@ __metadata:
   version: 3.6.0
   resolution: "jquery@npm:3.6.0"
   checksum: 8fd5fef4aa48fd374ec716dd1c1df1af407814a228e15c1260ca140de3a697c2a77c30c54ff1d238b6a3ab4ddc445ddeef9adce6c6d28e4869d85eb9d3951c0e
+  languageName: node
+  linkType: hard
+
+"jquery@npm:^3.2.1":
+  version: 3.6.1
+  resolution: "jquery@npm:3.6.1"
+  checksum: 6177d866a74f1137cad800f142c7cdbd5ab19cd4282546f8bdb4890c9f933b1d542ab96f2aa15d007e43c98de7315b0513e849ec5359d3ac5640f720892fe547
   languageName: node
   linkType: hard
 
@@ -17766,6 +17774,25 @@ __metadata:
   dependencies:
     string-width: ^1.0.2 || 2 || 3 || 4
   checksum: d5fc37cd561f9daee3c80e03b92ed3e84d80dde3365a8767263d03dacfc8fa06b065ffe1df00d8c2a09f731482fcacae745abfbb478d4af36d0a891fad4834d3
+  languageName: node
+  linkType: hard
+
+"wikibase-api@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "wikibase-api@npm:3.0.2"
+  dependencies:
+    jquery: ^3.2.1
+    wikibase-data-values: ^0.10.0
+  checksum: fd22b33abe9bb1e36351cacdfdf72ef5153f4833cfb6979b4fdfd435918f30251ed2c7ea6985bbc7e075b62c8fb6c661dc603b9142cacc245bfe7027151138db
+  languageName: node
+  linkType: hard
+
+"wikibase-data-values@npm:^0.10.0":
+  version: 0.10.0
+  resolution: "wikibase-data-values@npm:0.10.0"
+  dependencies:
+    jquery: ^3.2.1
+  checksum: 629edfd2ad77c6e85702df1af3c4302d94df8c6582838654e7340042254319326efa7ff8513144ea7df26af7d33c846e0badd74eb8dd7afc218ee7f65d2a1dc7
   languageName: node
   linkType: hard
 

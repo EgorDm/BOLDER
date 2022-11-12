@@ -4,5 +4,14 @@
     "ghcr.io/devcontainers/features/node:1": {
       "version": "16"
     }
-  }
+},
+"customizations": {
+	"vscode": {
+		"extensions": [
+			"ms-vscode.vscode-typescript-next",
+			"2gua.rainbow-brackets",
+			"dbaeumer.vscode-eslint"
+		]
+	}
+}
 }

@@ -10,6 +10,8 @@ import { AutocompleteProps } from "@mui/material/Autocomplete/Autocomplete";
 import _ from "lodash";
 import throttle from "lodash/throttle";
 import React, { useMemo } from "react";
+import { useQuery, useQueryClient } from "react-query";
+import { fetchSearchTerms } from "../../services/wikidata";
 import { Term, TermPos, SearchResult } from "../../types";
 import { extractIriLabel, formatIri } from "../../utils/formatting";
 import { PREFIXES } from "../../utils/sparql";
@@ -30,14 +32,25 @@ export const TermInput = (props: {
 
   const value = propValue ?? valueInternal;
 
+  const queryClient = useQueryClient();
+
   const fetchOptions = React.useMemo(() => throttle(
     async (
       request: { query: string },
       callback: (result?: SearchResult<Term>) => void,
     ) => {
-      console.log('TODO: fetch term data')
-      // callback(result.data)
+      const queryKey = ['search', request.query, pos, limit];
+      const cachedResult = queryClient.getQueryData(queryKey);
+      if (cachedResult) {
+        callback(cachedResult as any);
+        return;
+      }
+
+      const result = await fetchSearchTerms(request.query, pos, limit)
+      callback(result);
+      queryClient.setQueryData(['search', request.query, pos, limit], result);
     }, 200), [ pos, limit ]);
+
 
   React.useEffect(() => {
     let active = true;
