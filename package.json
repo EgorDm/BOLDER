@@ -58,7 +58,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "build": "craco build",
+    "build": "CI=false craco build",
     "start": "craco start",
     "test": "craco test"
   },
