@@ -32,6 +32,7 @@ export const ResultTab = ({
   setData: (data: Partial<OutputConfig>) => void,
 }) => {
   try {
+    console.log(outputs, 'test');
     const snapshot: PlotBuilderData = (outputs[0] as CellExecuteOutput).snapshot;
 
     // eslint-disable-next-line react-hooks/rules-of-hooks

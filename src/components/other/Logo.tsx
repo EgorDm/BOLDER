@@ -5,7 +5,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 export const Logo = (props: {}) => (
   <Stack direction="row">
     <Typography variant="h3" fontWeight={'bold'}>
-      BOLD
+      BOLDER
     </Typography>
     {/*<MoreHorizIcon/>*/}
     <MoreHorizIcon sx={{

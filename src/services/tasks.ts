@@ -35,11 +35,11 @@ export const taskRunCell = async (
             for (const source of cellW.source) {
                 const result = await runSparqlQuery(source, timeout);
                 for (const output of result.outputs) {
-                    if (output.type === 'execute_result') {
+                    if (output.output_type === 'execute_result') {
                         output['snapshot'] = snapshot;
                     }
+                    outputs.push(output);
                 }
-                outputs = [...outputs, ...result.outputs];
                 if (result.error) {
                     error = true;
                     break;
