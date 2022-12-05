@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/BOLDER/static/css/main.fd35c6fd.css",
-    "main.js": "/BOLDER/static/js/main.385c9a29.js",
+    "main.js": "/BOLDER/static/js/main.0bd98730.js",
     "static/js/6471.5424ca3a.chunk.js": "/BOLDER/static/js/6471.5424ca3a.chunk.js",
     "static/js/6692.0ee792be.chunk.js": "/BOLDER/static/js/6692.0ee792be.chunk.js",
     "static/js/2066.e0205f3f.chunk.js": "/BOLDER/static/js/2066.e0205f3f.chunk.js",
@@ -168,10 +168,10 @@
     "static/media/dcam.nq": "/BOLDER/static/media/dcam.5f58f4250dc9e27cdbc7.nq",
     "index.html": "/BOLDER/index.html",
     "main.fd35c6fd.css.map": "/BOLDER/static/css/main.fd35c6fd.css.map",
-    "main.385c9a29.js.map": "/BOLDER/static/js/main.385c9a29.js.map"
+    "main.0bd98730.js.map": "/BOLDER/static/js/main.0bd98730.js.map"
   },
   "entrypoints": [
     "static/css/main.fd35c6fd.css",
-    "static/js/main.385c9a29.js"
+    "static/js/main.0bd98730.js"
   ]
 }
