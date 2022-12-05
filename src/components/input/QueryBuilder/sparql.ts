@@ -32,13 +32,15 @@ export interface QueryState {
   globalBounds: SparqlValue[],
   statements: Set<string>,
   wikidata: boolean,
+  predicateVars: Set<string>
 }
 
-export const tryQueryToSparql = (query: RuleGroup, wikidata = true) => {
+export const tryQueryToSparql = (query: RuleGroup, wikidata = true, predVars: Set<string> = null) => {
   const state: QueryState = {
     tempVarCounter: 0,
     globalBounds: [],
     statements: new Set(),
+    predicateVars: predVars ?? new Set(),
     wikidata,
   }
 
@@ -48,16 +50,16 @@ export const tryQueryToSparql = (query: RuleGroup, wikidata = true) => {
 
   return [
     ruleGroupToSparql(state, query),
-    ...state.globalBounds
-  ]
+    ...state.globalBounds,
+  ];
 }
 
-export const queryToSparql = (query: RuleGroup, wikidata = true) => {
+export const queryToSparql = (query: RuleGroup, wikidata = true, predVars: Set<string> = null) => {
   try {
-    return tryQueryToSparql(query, wikidata);
+    return tryQueryToSparql(query, wikidata, predVars);
   } catch (e) {
     console.error(e)
-    return '';
+    return {};
   }
 }
 
@@ -358,6 +360,10 @@ export const flexTermToSparql = (state: QueryState, term: FlexibleTerm) => {
     case 'variable': {
       if (!term.variable.value) {
         throw new Error('Variable value is required')
+      }
+
+      if (term.variable?.pos == "PREDICATE") {
+        state.predicateVars.add(term.variable.value);
       }
       return {
         varName: variable(term.variable.value)

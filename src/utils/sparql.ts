@@ -93,6 +93,7 @@ export const querySparqlLabel = (variable: string) => {
 
 export const alias = (expr: SparqlValue, alias: Variable | string) => ({
   expr,
+  value: typeof alias === 'string' ? variable(alias) : alias,
   alias: typeof alias === 'string' ? variable(alias) : alias,
   _toPartialString(options) {
     return sparql`( ${expr} AS ${alias} )`._toPartialString(options)
@@ -133,43 +134,50 @@ export const optionalBound = (expr: SparqlValue | SparqlValue[]) => ({
   }
 })
 
-export const sparqlLabelBound = (v: Variable | string, wikidata = false) => {
+export const sparqlLabelBound = (v: Variable | string, wikidata = false, predicate = false) => {
   const { wikibase, rdfs } = WDT_NAMESPACES;
   const varName = typeof v === 'string' ? variable(v) : v;
   const varLabel = variable(`${varName.value}Label`);
 
   let labelSelect;
   if (wikidata) {
-    const varClaim = suffix(varName, 'Claim');
-    labelSelect = sparqlConjunctionBuilder([
-      brackets([
+    if (predicate) {
+      const varClaim = suffix(varName, 'Claim');
+      const bound = optionalBound([
         triple(varClaim, wikibase.directClaim, varName),
         triple(varClaim, rdfs.label, varLabel),
-      ], true),
-      brackets([
-        triple(varName, rdfs.label, varLabel)
-      ], true),
-    ], 'OR', 'must');
+        sparql`FILTER (BOUND(${varLabel}) && lang(${varLabel}) = "en").`
+      ])
+
+      return {
+        bounds: [ bound ],
+        varLabel: varLabel
+      }
+    } else {
+      return {
+        bounds: [ ],
+        varLabel
+      }
+    }
   } else {
     labelSelect = triple(varName, rdfs.label, varLabel);
-  }
+    const labelFilter = sparql`FILTER (BOUND(${varLabel}) && lang(${varLabel}) = "en").`;
+    const bound = optionalBound([ labelSelect, labelFilter ]);
 
-  const labelFilter = sparql`FILTER (BOUND(${varLabel}) && lang(${varLabel}) = "en").`;
-  const bound = optionalBound([ labelSelect, labelFilter ]);
-
-  return {
-    bounds: [ bound ],
-    varLabel
+    return {
+      bounds: [ bound ],
+      varLabel
+    }
   }
 }
 
-export const sparqlSimpleLabelBound = (v: Variable | string) => {
+export const sparqlSimpleLabelBound = (v: Variable | string, wikidata = false) => {
   const { rdfs } = NAMESPACES;
   const varName = typeof v === 'string' ? variable(v) : v;
   const varLabel = suffix(varName, 'Label');
 
   return {
-    bounds: [
+    bounds: wikidata ? [] : [
       optionalBound([
         triple(varName, rdfs.label, varLabel),
         sparql`FILTER (BOUND(${varLabel}) && lang(${varLabel}) = "en").`,
@@ -179,13 +187,22 @@ export const sparqlSimpleLabelBound = (v: Variable | string) => {
   }
 }
 
-export const sparqlLabelsBound = (v: (Variable | string)[], wikidata = false) => {
-  return v.reduce((acc: any, v) => {
-    const { bounds, varLabel } = sparqlLabelBound(v, wikidata);
+export const sparqlLabelsBound = (v: (Variable | string)[], wikidata = false, predicateVars: Set<string> = null) => {
+  const result = v.reduce((acc: any, v) => {
+    const isPredicate = typeof v === 'string' ? predicateVars?.has(v) : predicateVars?.has(v.value);
+
+    const { bounds, varLabel } = sparqlLabelBound(v, wikidata, isPredicate);
     acc.bounds.push(...bounds);
     acc.vars.push(varLabel);
     return acc;
   }, { bounds: [], vars: [] })
+
+  if (wikidata) {
+    result.bounds.push(
+        sparql`SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }`
+    )
+  }
+  return result;
 }
 
 export type SPARQLParsedValue = NamedNode | string | number | boolean | Date | null | undefined;

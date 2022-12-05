@@ -14,10 +14,12 @@ export const buildQuery = (data: QueryBuilderData) => {
     // throw new Error('No variables selected');
   }
 
-  const { bounds: labelBounds, vars: labelVars } = sparqlLabelsBound(vars, wikidata);
+  const predVars = new Set<string>();
+  const body = queryToSparql(data.tree, wikidata, predVars);
+
+  const { bounds: labelBounds, vars: labelVars } = sparqlLabelsBound(vars, wikidata, predVars);
   const selectVars = [ ...vars, ...labelVars ];
 
-  const body = queryToSparql(data.tree, wikidata);
   const query = SELECT`${selectVars}`
     .WHERE`
       ${body}

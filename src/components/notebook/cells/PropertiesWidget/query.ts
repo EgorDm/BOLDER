@@ -13,6 +13,7 @@ export const buildQuery = (data: PropertiesWidgetData) => {
     globalBounds: [],
     tempVarCounter: 0,
     statements: new Set(),
+    predicateVars: new Set(),
     wikidata: true,
   };
 

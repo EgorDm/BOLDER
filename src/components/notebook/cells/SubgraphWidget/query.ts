@@ -20,11 +20,12 @@ export const buildQuery = (data: SubgraphWidgetData) => {
     globalBounds: [],
     tempVarCounter: 0,
     statements: new Set(),
+    predicateVars: new Set(),
     wikidata: true,
   }
 
   const { varName: eVar, bounds: eBounds } = flexTermToSparql(state, data.entity);
-  const { bounds: eLabelBounds, varLabel: eVarLabel } = sparqlSimpleLabelBound(eVar);
+  const { bounds: eLabelBounds, varLabel: eVarLabel } = sparqlSimpleLabelBound(eVar, true);
 
   let pBound = undefined;
   if (!(data.anyPredicate ?? true)) {
@@ -42,13 +43,13 @@ export const buildQuery = (data: SubgraphWidgetData) => {
       bounds.push(triple(labelledVar, wikibase.directClaim, varName));
     }
 
-    const { bounds: labelBounds, varLabel } = sparqlSimpleLabelBound(labelledVar);
+    const { bounds: labelBounds, varLabel } = sparqlSimpleLabelBound(labelledVar, true);
     return { varName, varLabel, bounds: [...bounds, labelBounds] }
   }
 
   const addObject = () => {
     const varName = newVar(state, 'o');
-    const { bounds, varLabel } = sparqlSimpleLabelBound(varName);
+    const { bounds, varLabel } = sparqlSimpleLabelBound(varName, true);
 
     return {
       varName, varLabel,
@@ -104,6 +105,7 @@ export const buildQuery = (data: SubgraphWidgetData) => {
   const query = CONSTRUCT`${selectTriples}`
     .WHERE`
       ${bounds}
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
     `
     .LIMIT((data.limit ?? 20) * 3);
 

@@ -200,10 +200,11 @@ const parseSelectColumns = (
   const xs = [];
   xs.push(_.zip(
     df[suffix(column, RESULT_SUFFIX).value],
-    df[suffix(column, 'Label' + RESULT_SUFFIX).value]
+    df[suffix(column, RESULT_SUFFIX + 'Label').value]
   ).map(([ v, label ]) => {
     return sparqlPrettyPrint(sparqlParseValue(v), sparqlParseValue(label), prefixes, extractLabel)
   }))
+
   return _.zip(...xs).map((v) => v.join('-'));
 }
 

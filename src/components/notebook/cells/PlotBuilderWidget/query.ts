@@ -31,7 +31,8 @@ export const buildQuery = (data: PlotBuilderData) => {
   const zBound = z_vars.map(v => sparqlDTypeBound(v, data.z?.dtype));
   const yBound = y_aggregate === 'COUNT' ? null : y_vars.map(v => sparqlDTypeBound(v, 'numeric'));
 
-  const body = queryToSparql(data.tree, true);
+  const predVars = new Set<string>();
+  const body = queryToSparql(data.tree, true, predVars);
   const queryBody = sparql`
       ${body}
       ${xBound}
@@ -46,18 +47,14 @@ export const buildQuery = (data: PlotBuilderData) => {
     z_vars, data.z?.dtype, queryBody, data.max_groups_z ?? 20,
   );
   const zVarsSelect = _.zip(z_vars, zVarsD).map(([v, d]) => alias(d, suffix(v, RESULT_SUFFIX)));
-
   const aggregatedVars = y_vars.map(v => alias(aggregateToSparql(null, v, y_aggregate), suffix(v, RESULT_SUFFIX)));
-  const { bounds: labelBounds, vars: labelVars } = sparqlLabelsBound([ ...x_vars, ...z_vars ], true);
-  const aggregatedLabelVars = labelVars.map(v => alias(aggregateToSparql(null, v, "SAMPLE"), suffix(v, RESULT_SUFFIX)));
-  const selectVars = [ ...xVarsSelect, ...aggregatedVars, ...zVarsSelect, ...aggregatedLabelVars ];
+  const selectVars = [ ...xVarsSelect, ...aggregatedVars, ...zVarsSelect];
 
   let primaryQuery = SELECT`${selectVars}`
     .WHERE`
       ${queryBody}
       ${xBoundsD}
       ${zBoundsD}
-      ${labelBounds}
     `
     .LIMIT(data.xy_only
       ? (data.max_groups_x ?? 20)
@@ -86,8 +83,18 @@ export const buildQuery = (data: PlotBuilderData) => {
     );
   }
 
+  const preLabelVars = [ ...x_vars, ...z_vars ].map(v => suffix(v, RESULT_SUFFIX).value);
+  const preLabelPredVars = new Set(Array.from(predVars).map(v => suffix(variable(v), RESULT_SUFFIX).value));
+
+  const { bounds: labelBounds, vars: labelVars } = sparqlLabelsBound(preLabelVars, true, preLabelPredVars);
+  const finalSelectVars = [ ...selectVars.map((v) => v.value ), ...labelVars ];
+  const superQuery = SELECT`${finalSelectVars}`.WHERE`
+    { ${primaryQuery} }
+    ${labelBounds}
+  `
+
   return {
-    primaryQuery: primaryQuery.build(),
+    primaryQuery: superQuery.build(),
   };
 }
 

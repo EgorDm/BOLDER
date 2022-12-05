@@ -89,7 +89,7 @@ export const FlexibleTermInput = ({
         sx={{ flex: 1 }}
         options={variables as any}
         value={variable}
-        onChange={(variable: OptionType) => onChange({ ...value, type, variable })}
+        onChange={(variable: OptionType) => onChange({ ...value, type, variable: { ...variable, pos } })}
         allowAny={false}
         {...props as any}
       />)
@@ -161,5 +161,5 @@ export interface FlexibleTerm {
   type: FlexibleTermType;
   search?: Term[];
   manual?: string;
-  variable?: Partial<OptionType>;
+  variable?: Partial<OptionType & { pos: TermPos }>;
 }
